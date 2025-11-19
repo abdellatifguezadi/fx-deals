@@ -65,9 +65,27 @@ Content-Type: application/json
 }
 ```
 
-### Get All Deals
+### Import Multiple Deals (Batch)
 ```http
-GET /api/deals
+POST /api/deals/batch
+Content-Type: application/json
+
+[
+  {
+    "dealUniqueId": "FX001",
+    "fromCurrencyIsoCode": "USD",
+    "toCurrencyIsoCode": "EUR",
+    "dealTimestamp": "2024-01-15T10:30:00",
+    "dealAmount": 1500.75
+  },
+  {
+    "dealUniqueId": "FX002",
+    "fromCurrencyIsoCode": "GBP",
+    "toCurrencyIsoCode": "JPY",
+    "dealTimestamp": "2024-01-15T11:00:00",
+    "dealAmount": 2000.00
+  }
+]
 ```
 
 ## Validation Rules
@@ -132,9 +150,26 @@ The project includes comprehensive unit tests for:
      }'
    ```
 
-2. **Get All Deals**:
+2. **Import Multiple Deals**:
    ```bash
-   curl http://localhost:8080/api/deals
+   curl -X POST http://localhost:8080/api/deals/batch \
+     -H "Content-Type: application/json" \
+     -d '[
+       {
+         "dealUniqueId": "BATCH001",
+         "fromCurrencyIsoCode": "USD",
+         "toCurrencyIsoCode": "EUR",
+         "dealTimestamp": "2024-01-15T10:30:00",
+         "dealAmount": 1500.75
+       },
+       {
+         "dealUniqueId": "BATCH002",
+         "fromCurrencyIsoCode": "GBP",
+         "toCurrencyIsoCode": "JPY",
+         "dealTimestamp": "2024-01-15T11:00:00",
+         "dealAmount": 2000.00
+       }
+     ]'
    ```
 
 3. **Test Duplicate Prevention**:
@@ -211,6 +246,7 @@ The application uses SLF4J with Logback for comprehensive logging:
 - `mvn clean` - Clean build artifacts
 - `docker-compose up -d` - Start with Docker Compose
 - `docker-compose down` - Stop services
+- `docker-compose run --rm test` - Run tests in Docker
 - `docker-compose logs -f app` - View application logs
 - `docker-compose exec mysql mysql -u root deals` - Access database shell
 
