@@ -32,20 +32,49 @@ fx-deals-importer/
 │   ├── main/
 │   │   ├── java/org/example/fxdealsimporter/
 │   │   │   ├── controller/          # REST Controllers
+│   │   │   │   └── DealController.java
 │   │   │   ├── dto/                 # Data Transfer Objects
+│   │   │   │   ├── BatchImportResponse.java
+│   │   │   │   ├── DealRequest.java
+│   │   │   │   └── DealResponse.java
 │   │   │   ├── entity/              # JPA Entities
+│   │   │   │   └── Deal.java
 │   │   │   ├── exception/           # Custom Exceptions
+│   │   │   │   ├── DuplicateDealException.java
+│   │   │   │   ├── GlobalExceptionHandler.java
+│   │   │   │   ├── InvalidCurrencyException.java
+│   │   │   │   └── InvalidDealException.java
+│   │   │   ├── mapper/              # MapStruct Mappers
+│   │   │   │   └── DealMapper.java
 │   │   │   ├── repository/          # Data Repositories
+│   │   │   │   └── DealRepository.java
 │   │   │   ├── service/             # Business Logic
+│   │   │   │   ├── Impl/
+│   │   │   │   │   ├── CurrencyValidationService.java
+│   │   │   │   │   └── DealService.java
+│   │   │   │   ├── ICurrencyValidationService.java
+│   │   │   │   └── IDealService.java
 │   │   │   └── FxDealsImporterApplication.java
 │   │   └── resources/
+│   │       ├── db/changelog/        # Liquibase Database Migration
+│   │       │   ├── 000-create-database.sql
+│   │       │   ├── 001-create-deals-table.sql
+│   │       │   └── db.changelog-master.xml
 │   │       └── application.properties
 │   └── test/                        # Unit Tests
+│       └── java/org/example/fxdealsimporter/
+│           ├── controller/
+│           │   └── DealControllerTest.java
+│           ├── service/
+│           │   ├── CurrencyValidationServiceTest.java
+│           │   └── DealServiceTest.java
+│           └── FxDealsImporterApplicationTests.java
+├── logs/                            # Application Logs
+├── target/                          # Maven Build Output
 ├── docker-compose.yml               # Docker Compose configuration
 ├── Dockerfile                       # Docker image configuration
-
-├── init.sql                        # Database initialization
-├── sample-deals.json               # Sample test data
+├── Makefile                         # Build automation commands
+├── pom.xml                          # Maven configuration
 └── README.md
 ```
 
