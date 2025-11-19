@@ -1,0 +1,49 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: fx-deals-mysql
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: yes
+      MYSQL_DATABASE: deals
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - fx-deals-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  app:
+    build: .
+    container_name: fx-deals-app
+    depends_on:
+      mysql:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/deals
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ""
+    networks:
+      - fx-deals-network
+
+  test:
+    image: maven:3.8-openjdk-17
+    container_name: fx-deals-test
+    command: mvn test
+    volumes:
+      - .:/app
+    working_dir: /app
+    networks:
+      - fx-deals-network
+
+volumes:
+  mysql_data:
+
+networks:
+  fx-deals-network:
+    driver: bridge
